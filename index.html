@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>MCN: Discomforts of Pregnancy & Relief Measures – Adele Pillitteri</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <style>
+        .transition-all { transition: all 0.3s ease; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #b45309; border-radius: 8px; }
+        .recall-mode .reveal-text {
+            background-color: #cbd5e1;
+            color: transparent;
+            border-radius: 0.375rem;
+            padding: 0 0.25rem;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s;
+            box-shadow: inset 0 0 0 1px #94a3b8;
+        }
+        .recall-mode .reveal-text:hover,
+        .recall-mode .reveal-text.revealed {
+            background-color: #fde047;
+            color: #1e293b;
+            box-shadow: none;
+        }
+        .content-section { animation: fade 0.3s ease; }
+        @keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        .locked-section { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+        .quiz-feedback-correct { background-color: #dcfce7; border-left: 4px solid #22c55e; }
+        .quiz-feedback-wrong { background-color: #fee2e2; border-left: 4px solid #ef4444; }
+        .nav-btn.active { background-color: #ffedd5; color: #9a3412; border-right: 4px solid #ea580c; }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: { extend: { colors: { preg: { light: '#ffedd5', DEFAULT: '#ea580c', dark: '#9a3412' } } } }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 h-screen flex flex-col md:flex-row font-sans text-slate-800 overflow-hidden">
+
+    <!-- Mobile Header -->
+    <div class="md:hidden bg-preg-dark text-white p-4 flex justify-between items-center shadow-md z-30 shrink-0">
+        <button onclick="toggleMobileMenu()" class="text-white focus:outline-none z-40"><i class="fa-solid fa-bars text-2xl"></i></button>
+        <h1 class="font-bold text-lg absolute left-1/2 transform -translate-x-1/2 pointer-events-none"><i class="fa-solid fa-heart-pulse mr-2"></i> Pregnancy Discomforts</h1>
+        <div class="w-8"></div>
+    </div>
+
+    <!-- Sidebar -->
+    <nav id="sidebar" class="hidden md:flex flex-col w-full md:w-80 bg-white shadow-2xl h-full absolute md:relative z-30 transition-all duration-300 shrink-0 border-r border-slate-200 overflow-y-auto">
+        <div class="p-6 bg-gradient-to-br from-preg-dark to-preg text-white hidden md:block shrink-0">
+            <h1 class="font-black text-2xl tracking-wide"><i class="fa-solid fa-child-reaching text-preg-light mr-2"></i> Discomforts of Pregnancy</h1>
+            <p class="text-sm text-slate-300 mt-1">Adele Pillitteri · Maternal‑Child Nursing</p>
+        </div>
+        <div class="flex-1 py-4">
+            <ul class="space-y-1 text-sm font-medium">
+                <li><button onclick="showSection('home')" id="btn-home" class="nav-btn w-full text-left px-6 py-3 hover:bg-slate-50 transition-colors"><i class="fa-solid fa-house w-6 nav-icon"></i><i class="fa-solid fa-lock w-6 hidden text-slate-400"></i> Home / Start</button></li>
+                <li><button onclick="showSection('first')" id="btn-first" class="nav-btn w-full text-left px-6 py-3 hover:bg-slate-50 transition-colors locked-section"><i class="fa-solid fa-calendar-week w-6 nav-icon hidden"></i><i class="fa-solid fa-lock w-6 text-slate-400"></i> 1. First Trimester Discomforts</button></li>
+                <li><button onclick="showSection('second')" id="btn-second" class="nav-btn w-full text-left px-6 py-3 hover:bg-slate-50 transition-colors locked-section"><i class="fa-solid fa-calendar-week w-6 nav-icon hidden"></i><i class="fa-solid fa-lock w-6 text-slate-400"></i> 2. Second Trimester Discomforts</button></li>
+                <li><button onclick="showSection('third')" id="btn-third" class="nav-btn w-full text-left px-6 py-3 hover:bg-slate-50 transition-colors locked-section"><i class="fa-solid fa-calendar-week w-6 nav-icon hidden"></i><i class="fa-solid fa-lock w-6 text-slate-400"></i> 3. Third Trimester Discomforts</button></li>
+                <li><button onclick="showSection('relief')" id="btn-relief" class="nav-btn w-full text-left px-6 py-3 hover:bg-slate-50 transition-colors locked-section"><i class="fa-solid fa-hand-holding-heart w-6 nav-icon hidden"></i><i class="fa-solid fa-lock w-6 text-slate-400"></i> 4. General Relief & Self‑Care</button></li>
+                <li><button onclick="showSection('nursing')" id="btn-nursing" class="nav-btn w-full text-left px-6 py-3 hover:bg-slate-50 transition-colors locked-section"><i class="fa-solid fa-user-nurse w-6 nav-icon hidden"></i><i class="fa-solid fa-lock w-6 text-slate-400"></i> 5. Nursing Role & Danger Signs</button></li>
+                <li><button onclick="showSection('mnemonics')" id="btn-mnemonics" class="nav-btn w-full text-left px-6 py-3 hover:bg-slate-50 transition-colors locked-section"><i class="fa-solid fa-brain w-6 nav-icon hidden"></i><i class="fa-solid fa-lock w-6 text-slate-400"></i> 6. Mnemonic Appendix</button></li>
+                <li><button onclick="showSection('final_quiz_sec')" id="btn-final_quiz_sec" class="nav-btn w-full text-left px-6 py-3 hover:bg-slate-50 transition-colors border-t border-slate-200 mt-2 locked-section"><i class="fa-solid fa-graduation-cap w-6 text-amber-500 nav-icon hidden"></i><i class="fa-solid fa-lock w-6 text-slate-400"></i> Final 50‑Item Exam</button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-1 h-full overflow-y-auto bg-slate-100 relative w-full">
+        <div class="fixed top-16 md:top-4 right-4 md:right-8 z-40 flex items-center bg-white/90 backdrop-blur px-4 py-3 rounded-full shadow-lg border border-slate-200 cursor-pointer hover:bg-slate-50" onclick="toggleRecallMode()">
+            <span class="mr-3 text-sm font-bold text-slate-700 hidden md:inline"><i class="fa-solid fa-brain text-preg mr-1"></i> Active Recall</span>
+            <span class="mr-3 text-sm font-bold text-slate-700 md:hidden"><i class="fa-solid fa-brain text-preg"></i></span>
+            <button id="recall-toggle" class="w-12 h-6 bg-slate-300 rounded-full relative transition-colors duration-300 focus:outline-none shadow-inner pointer-events-none">
+                <div id="recall-knob" class="w-5 h-5 bg-white rounded-full absolute top-0.5 left-0.5 transition-transform duration-300 shadow"></div>
+            </button>
+        </div>
+
+        <div class="p-4 md:p-8 max-w-6xl mx-auto pb-32">
+            <!-- HOME -->
+            <section id="home" class="content-section flex flex-col items-center justify-center min-h-[80vh] text-center block">
+                <div class="bg-gradient-to-br from-slate-800 to-preg-dark text-white rounded-3xl shadow-2xl p-10 md:p-16 w-full relative overflow-hidden">
+                    <div class="absolute top-0 right-0 -mt-10 -mr-10 text-white opacity-5"><i class="fa-solid fa-fetus text-[20rem]"></i></div>
+                    <div class="relative z-10">
+                        <div class="bg-white/10 backdrop-blur-sm inline-block p-4 rounded-full text-preg-light mb-6"><i class="fa-solid fa-hand-peace text-5xl"></i></div>
+                        <h3 class="text-xl font-bold text-slate-300 mb-2 uppercase">Maternal‑Child Nursing · Adele Pillitteri</h3>
+                        <h1 class="text-4xl md:text-6xl font-black leading-tight drop-shadow-md">Discomforts of Pregnancy<br>& Relief Measures</h1>
+                        <p class="text-lg max-w-2xl mx-auto mt-6 text-slate-200">Evidence‑based guidance for common pregnancy discomforts — from nausea to backache, varicose veins to Braxton Hicks. Learn causes, relief measures, and when to seek help.</p>
+                        <button onclick="unlockFirstSection()" class="mt-10 bg-slate-600 hover:bg-slate-500 text-white font-black py-4 px-12 rounded-full shadow-xl transition-transform hover:scale-105 text-lg flex items-center mx-auto">Begin Module <i class="fa-solid fa-arrow-right ml-3"></i></button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 1: First Trimester Discomforts -->
+            <section id="first" class="content-section hidden">
+                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-black text-slate-800 mb-6 border-b-2 border-preg pb-3"><i class="fa-solid fa-calendar-week text-preg mr-4"></i> First Trimester Discomforts (0–12 weeks)</h2>
+                    <div class="bg-preg-light/30 border-l-4 border-preg p-4 rounded-r mb-6">Common discomforts due to rising hCG, estrogen, progesterone, and metabolic changes. Most resolve by 2nd trimester.</div>
+                    <div class="grid md:grid-cols-2 gap-5">
+                        <div class="bg-slate-50 p-4 rounded-xl"><strong class="text-preg">🤢 Nausea & Vomiting ("Morning Sickness")</strong><br>Cause: ↑ hCG, estrogen, progesterone, altered gastric motility.<br>Relief: Small frequent meals, avoid spicy/greasy food, ginger tea, crackers before rising, acupressure wristbands.</div>
+                        <div class="bg-slate-50 p-4 rounded-xl"><strong class="text-preg">🍼 Breast Tenderness</strong><br>Cause: ↑ estrogen & progesterone → glandular hypertrophy.<br>Relief: Supportive bra, avoid underwire, dress warmly, check for fissures if painful.</div>
+                        <div class="bg-slate-50 p-4 rounded-xl"><strong class="text-preg">😴 Fatigue</strong><br>Cause: Increased metabolic demands, hormonal shifts, poor sleep.<br>Relief: Short naps, light exercise, delegate tasks, balanced meals, early bedtime.</div>
+                        <div class="bg-slate-50 p-4 rounded-xl"><strong class="text-preg">💧 Frequent Urination</strong><br>Cause: Uterus presses on bladder, increased blood volume.<br>Relief: Empty bladder frequently, avoid caffeine, Kegel exercises, reduce fluids before bed.</div>
+                        <div class="bg-slate-50 p-4 rounded-xl"><strong class="text-preg">🫀 Palmar Erythema / Itchy Palms</strong><br>Cause: ↑ estrogen.<br>Relief: Reassure normal, calamine lotion, usually self‑limiting.</div>
+                        <div class="bg-slate-50 p-4 rounded-xl"><strong class="text-preg">😖 Mood Swings & Emotional Lability</strong><br>Cause: Hormonal changes, stress, fatigue.<br>Relief: Talk about feelings, prenatal counseling, light exercise, adequate sleep.</div>
+                    </div>
+                    <button onclick="openQuiz('first')" class="mt-8 w-full bg-preg text-white font-black py-4 rounded-xl shadow-md hover:bg-preg-dark transition-colors text-lg"><i class="fa-solid fa-list-check mr-3"></i> Take 10-Item Quiz (Unlocks next section)</button>
+                </div>
+            </section>
+
+            <!-- Section 2: Second Trimester Discomforts -->
+            <section id="second" class="content-section hidden">
+                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-black text-slate-800 mb-6 border-b-2 border-preg pb-3"><i class="fa-solid fa-calendar-week text-preg mr-4"></i> Second Trimester Discomforts (13–28 weeks)</h2>
+                    <div class="grid md:grid-cols-2 gap-5">
+                        <div class="bg-slate-50 p-4 rounded-xl"><strong class="text-preg">🔥 Heartburn / Pyrosis</strong><br>Cause: Progesterone relaxes esophageal sphincter; uterus pushes stomach.<br>Relief: Small meals, avoid lying down after eating, elevate head, avoid spicy/fatty foods, drink fluids between meals.</div>
+                        <div class="bg-slate-50 p-4 rounded-xl"><strong class="text-preg">💩 Constipation</strong><br>Cause: Progesterone slows GI motility; iron supplements.<br>Relief: High‑fiber diet (fruits, vegetables, whole grains), plenty of fluids, regular walking, stool softeners if needed.</div>
+                        <div class="bg-slate-50 p-4 rounded-xl"><strong class="text-preg">🦵 Varicose Veins & Hemorrhoids</strong><br>Cause: Increased blood volume, pressure from uterus, progesterone.<br>Relief: Elevate legs 30 min twice daily, compression stockings, avoid prolonged standing, high‑fiber diet, Kegels, avoid constipation.</div>
+                        <div class="bg-slate-50 p-4 rounded-xl"><strong class="text-preg">🦶 Ankle Edema (Dependent Edema)</strong><br>Cause: Fluid retention, decreased venous return.<br>Relief: Left side‑lying rest, elevate legs, avoid constrictive clothing, reassure normal if no proteinuria/hypertension.</div>
+                        <div class="bg-slate-50 p-4 rounded-xl"><strong class="text-preg">🩸 Nasal Congestion / Epistaxis</strong><br>Cause: ↑ estrogen → increased blood flow to nasal mucosa.<br>Relief: Humidifier, saline spray, avoid decongestants, gentle nose blowing.</div>
+                        <div class="bg-slate-50 p-4 rounded-xl"><strong class="text-preg">💪 Leg Cramps (Nocturnal)</strong><br>Cause: ↓ calcium, ↑ phosphorus, circulatory issues.<br>Relief: Stretch leg, dorsiflex foot, elevate legs, magnesium/calcium supplements if prescribed.</div>
+                    </div>
+                    <button onclick="openQuiz('second')" class="mt-8 w-full bg-preg text-white font-black py-4 rounded-xl shadow-md hover:bg-preg-dark transition-colors text-lg"><i class="fa-solid fa-list-check mr-3"></i> Take 10-Item Quiz (Unlocks next section)</button>
+                </div>
+            </section>
+
+            <!-- Section 3: Third Trimester Discomforts -->
+            <section id="third" class="content-section hidden">
+                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-black text-slate-800 mb-6 border-b-2 border-preg pb-3"><i class="fa-solid fa-calendar-week text-preg mr-4"></i> Third Trimester Discomforts (29–40 weeks)</h2>
+                    <div class="grid md:grid-cols-2 gap-5">
+                        <div class="bg-slate-50 p-4 rounded-xl"><strong class="text-preg">🦴 Backache (Lumbar Lordosis)</strong><br>Cause: Postural changes, weight gain, relaxin.<br>Relief: Low/moderate heels, pelvic tilt exercises, firm mattress, squat to lift, local heat, acetaminophen if needed.</div>
+                        <div class="bg-slate-50 p-4 rounded-xl"><strong class="text-preg">🌬️ Shortness of Breath (Dyspnea)</strong><br>Cause: Uterus pushes diaphragm, increased oxygen demand.<br>Relief: Sleep propped up, deep breathing, avoid overexertion, report persistent dyspnea.</div>
+                        <div class="bg-slate-50 p-4 rounded-xl"><strong class="text-preg">💥 Braxton Hicks Contractions</strong><br>Cause: Intermittent uterine contractions (practice contractions).<br>Relief: Change position, hydrate, rest; if regular and painful → report possible preterm labor.</div>
+                        <div class="bg-slate-50 p-4 rounded-xl"><strong class="text-preg">😴 Sleep Disturbances / Insomnia</strong><br>Cause: Discomfort, frequent urination, fetal movements.<br>Relief: Side‑lying with pillows, warm bath before bed, relaxation techniques, limit fluids before sleep.</div>
+                        <div class="bg-slate-50 p-4 rounded-xl"><strong class="text-preg">🖐️ Carpal Tunnel Syndrome</strong><br>Cause: Fluid retention compresses median nerve.<br>Relief: Wrist splints at night, elevate hands, avoid repetitive wrist motion.</div>
+                        <div class="bg-slate-50 p-4 rounded-xl"><strong class="text-preg">🤰 Pelvic Pressure / Round Ligament Pain</strong><br>Cause: Uterine growth, ligament stretching.<br>Relief: Change position slowly, pelvic rest if severe, warm compress.</div>
+                    </div>
+                    <button onclick="openQuiz('third')" class="mt-8 w-full bg-preg text-white font-black py-4 rounded-xl shadow-md hover:bg-preg-dark transition-colors text-lg"><i class="fa-solid fa-list-check mr-3"></i> Take 10-Item Quiz (Unlocks next section)</button>
+                </div>
+            </section>
+
+            <!-- Section 4: General Relief Measures & Lifestyle -->
+            <section id="relief" class="content-section hidden">
+                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-black text-slate-800 mb-6 border-b-2 border-preg pb-3"><i class="fa-solid fa-hand-holding-heart text-preg mr-4"></i> General Relief Measures & Lifestyle</h2>
+                    <ul class="list-disc pl-6 space-y-2 text-slate-700">
+                        <li><strong>Hydration:</strong> Drink 8–10 glasses of water daily – helps with constipation, edema, and UTI prevention.</li>
+                        <li><strong>Nutrition:</strong> Small frequent meals, avoid spicy/greasy foods, increase fiber, prenatal vitamins with iron & folic acid.</li>
+                        <li><strong>Exercise:</strong> Walking, swimming, prenatal yoga – improves circulation, reduces backache, constipation, and mood swings. Avoid supine exercises after 20 weeks.</li>
+                        <li><strong>Positioning:</strong> Side‑lying (preferably left) to improve venous return and reduce supine hypotension.</li>
+                        <li><strong>Rest & Sleep:</strong> Frequent naps, good sleep hygiene, pregnancy pillow for support.</li>
+                        <li><strong>Stress reduction:</strong> Relaxation techniques, prenatal classes, partner support, journaling.</li>
+                        <li><strong>Clothing:</strong> Loose, non‑constrictive, supportive bra, low heels, compression stockings if varicose veins.</li>
+                    </ul>
+                    <div class="bg-amber-50 p-3 rounded-lg mt-4"><strong>⚠️ Danger signs that require immediate provider notification:</strong> Severe headache, visual changes, epigastric pain, sudden edema of face/hands, decreased fetal movement, vaginal bleeding, rupture of membranes, persistent vomiting or fever.</div>
+                    <button onclick="openQuiz('relief')" class="mt-8 w-full bg-preg text-white font-black py-4 rounded-xl shadow-md hover:bg-preg-dark transition-colors text-lg"><i class="fa-solid fa-list-check mr-3"></i> Take 10-Item Quiz (Unlocks next section)</button>
+                </div>
+            </section>
+
+            <!-- Section 5: Nursing Role & Danger Signs -->
+            <section id="nursing" class="content-section hidden">
+                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-black text-slate-800 mb-6 border-b-2 border-preg pb-3"><i class="fa-solid fa-user-nurse text-preg mr-4"></i> Nursing Role & Danger Signs</h2>
+                    <ul class="list-disc pl-6 space-y-2">
+                        <li><strong>Assessment:</strong> Ask about specific discomforts at each prenatal visit, differentiate normal vs. abnormal.</li>
+                        <li><strong>Education:</strong> Provide anticipatory guidance for each trimester. Explain causes and safe relief measures (non‑pharmacologic first).</li>
+                        <li><strong>Medication safety:</strong> Acetaminophen (Tylenol) is safest analgesic; avoid NSAIDs (ibuprofen, aspirin) especially in 3rd trimester.</li>
+                        <li><strong>Referral:</strong> Severe hyperemesis → IV fluids; severe backache → physical therapy; suspected preeclampsia → immediate evaluation.</li>
+                        <li><strong>Emotional support:</strong> Reassure that most discomforts are normal and temporary. Encourage open communication.</li>
+                    </ul>
+                    <div class="bg-red-100 p-3 rounded-lg mt-4"><strong>🚨 When to seek immediate care (danger signs):</strong><br>• Severe headache or visual changes (flashes, spots)<br>• Epigastric or right upper quadrant pain<br>• Sudden facial or hand edema<br>• Decreased fetal movement<br>• Vaginal bleeding or rupture of membranes<br>• Persistent vomiting (cannot keep fluids down)<br>• Fever >100.4°F (38°C)</div>
+                    <button onclick="openQuiz('nursing')" class="mt-8 w-full bg-preg text-white font-black py-4 rounded-xl shadow-md hover:bg-preg-dark transition-colors text-lg"><i class="fa-solid fa-list-check mr-3"></i> Take 10-Item Quiz (Unlocks next section)</button>
+                </div>
+            </section>
+
+            <!-- Section 6: Mnemonics -->
+            <section id="mnemonics" class="content-section hidden">
+                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-black text-slate-800 mb-6 border-b-2 border-preg pb-3"><i class="fa-solid fa-brain text-preg mr-4"></i> Mnemonic Appendix</h2>
+                    <div class="overflow-x-auto rounded-xl border">
+                        <table class="w-full text-left text-sm md:text-base"><thead class="bg-preg-dark text-white"><tr><th class="p-3">Topic</th><th class="p-3">Mnemonic</th><th class="p-3">Meaning</th></tr></thead>
+                        <tbody><tr><td class="p-3 font-semibold">First trimester discomforts</td><td class="font-black">N F B F P M</td><td class="reveal-text">Nausea, Fatigue, Breast tenderness, Frequent urination, Palmar erythema, Mood swings</td></tr>
+                        <tr class="bg-slate-50"><td class="p-3 font-semibold">Second trimester discomforts</td><td class="font-black">H C V E N L</td><td class="reveal-text">Heartburn, Constipation, Varicose veins, Edema, Nasal congestion, Leg cramps</td></tr>
+                        <tr><td class="p-3 font-semibold">Third trimester discomforts</td><td class="font-black">B S B S C P</td><td class="reveal-text">Backache, Shortness of breath, Braxton Hicks, Sleep disturbances, Carpal tunnel, Pelvic pressure</td></tr>
+                        <tr class="bg-slate-50"><td class="p-3 font-semibold">General relief measures</td><td class="font-black">H N E P R</td><td class="reveal-text">Hydration, Nutrition, Exercise, Positioning, Rest</td></tr>
+                        <tr><td class="p-3 font-semibold">Pregnancy danger signs</td><td class="font-black">S H E D V</td><td class="reveal-text">Severe headache, Epigastric pain, Edema (face/hands), Decreased fetal movement, Vaginal bleeding/rupture</td></tr>
+                        </tbody>
+                    </table>
+                    <button onclick="openQuiz('final_quiz')" class="mt-8 w-full bg-amber-500 text-slate-900 font-black py-4 rounded-xl shadow-md hover:bg-amber-400 text-lg"><i class="fa-solid fa-graduation-cap mr-3"></i> Take Final 50‑Item Exam</button>
+                </div>
+            </section>
+
+            <!-- Final Quiz Section -->
+            <section id="final_quiz_sec" class="content-section hidden">
+                <div class="bg-white rounded-2xl shadow-lg p-8 text-center min-h-[60vh] flex flex-col justify-center items-center">
+                    <i class="fa-solid fa-graduation-cap text-8xl text-amber-400 mb-6"></i>
+                    <h2 class="text-4xl font-black text-slate-800 mb-4">Final 50‑Item Exam</h2>
+                    <p class="text-lg text-slate-600 mb-8">Covers all 5 sections. 75% required to pass.</p>
+                    <button onclick="openQuiz('final_quiz')" class="w-full max-w-md bg-preg-dark text-white font-black py-4 rounded-xl shadow-md hover:bg-preg text-xl">Start Final Exam</button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Quiz Modal -->
+    <div id="quiz-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-900/80 backdrop-blur-sm p-4">
+        <div class="bg-white w-full max-w-3xl rounded-2xl shadow-2xl p-6 md:p-8 relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeQuiz()" class="absolute top-4 right-4 text-slate-400 hover:text-red-500"><i class="fa-solid fa-xmark text-2xl"></i></button>
+            <h2 id="quiz-title" class="text-3xl font-black text-slate-800 mb-2"></h2>
+            <p class="text-slate-600 mb-6 font-medium border-b pb-4">Score ≥75% to unlock next section.</p>
+            <div id="quiz-questions-container" class="space-y-4"></div>
+            <button id="quiz-submit-btn" onclick="submitQuiz()" class="mt-8 w-full bg-preg text-white font-bold py-4 rounded-xl shadow-lg text-lg">Submit Answers</button>
+            <div id="quiz-result-container" class="hidden mt-6 p-4 rounded-xl bg-slate-100 border"></div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // Define unlocked sections
+            let unlockedSections = ['home'];
+            
+            // ---------- QUIZ DATA (10 questions each for 5 sections) ----------
+            const quizzes = {
+                first: {
+                    title: "Quiz 1: First Trimester Discomforts (10 items)",
+                    next: "second",
+                    questions: [
+                        { q: "The most common cause of nausea and vomiting in early pregnancy is:", options: ["Increased progesterone", "Elevated hCG and estrogen", "Iron deficiency", "Dehydration"], ans: 1 },
+                        { q: "Which of the following is a recommended relief measure for breast tenderness in first trimester?", options: ["Ice packs", "Supportive bra, avoid underwire", "Tight binding", "Topical estrogen"], ans: 1 },
+                        { q: "Frequent urination in early pregnancy is caused by:", options: ["UTI", "Uterine compression of bladder", "Decreased kidney function", "Polyhydramnios"], ans: 1 },
+                        { q: "Palmar erythema in pregnancy is due to:", options: ["Liver dysfunction", "Increased estrogen", "Thrombocytopenia", "Anemia"], ans: 1 },
+                        { q: "A woman reports extreme fatigue at 8 weeks gestation. The best nursing response is:", options: ["This is abnormal, need workup", "Normal due to metabolic demands; rest and small naps", "Increase caffeine", "Immediate blood transfusion"], ans: 1 },
+                        { q: "Mood swings in first trimester are primarily attributed to:", options: ["Sleep deprivation", "Hormonal changes and stress", "Nutritional deficiencies", "Gestational diabetes"], ans: 1 },
+                        { q: "Which food might help relieve morning sickness?", options: ["Spicy curry", "Greasy fried food", "Ginger tea or crackers", "Orange juice"], ans: 2 },
+                        { q: "Acupressure wristbands are used for:", options: ["Back pain", "Nausea and vomiting", "Leg cramps", "Headache"], ans: 1 },
+                        { q: "A pregnant woman complains of itchy palms with redness but no rash. This is likely:", options: ["Cholestasis of pregnancy", "Palmar erythema – normal", "Allergic reaction", "Scabies"], ans: 1 },
+                        { q: "Which of the following is a normal first trimester change that may cause fatigue?", options: ["Increased blood volume and metabolic rate", "Decreased cardiac output", "Anemia due to hemolysis", "Hypothyroidism"], ans: 0 }
+                    ]
+                },
+                second: {
+                    title: "Quiz 2: Second Trimester Discomforts (10 items)",
+                    next: "third",
+                    questions: [
+                        { q: "Heartburn in pregnancy is caused by:", options: ["Increased gastric acid", "Progesterone relaxing the esophageal sphincter", "Eating too much fiber", "Fetal head compression"], ans: 1 },
+                        { q: "Which measure helps relieve constipation during pregnancy?", options: ["Decrease fluid intake", "High‑fiber diet and walking", "Laxatives daily", "Bed rest"], ans: 1 },
+                        { q: "Varicose veins and hemorrhoids in pregnancy are due to:", options: ["Increased blood volume and progesterone effects", "Inadequate iron", "Low fiber diet only", "Excessive walking"], ans: 0 },
+                        { q: "A pregnant woman at 24 weeks complains of ankle swelling that improves with elevation. This is most likely:", options: ["Preeclampsia", "Dependent edema – normal", "Deep vein thrombosis", "Heart failure"], ans: 1 },
+                        { q: "Leg cramps at night in second trimester may be relieved by:", options: ["Massage and dorsiflexion of foot", "Decreasing calcium intake", "Immobilization", "High‑heeled shoes"], ans: 0 },
+                        { q: "Which of the following is recommended for nasal congestion in pregnancy?", options: ["Oral decongestants", "Saline nasal spray and humidifier", "Antihistamines", "Corticosteroids"], ans: 1 },
+                        { q: "The physiological cause of constipation in pregnancy includes:", options: ["Increased peristalsis", "Decreased water absorption", "Progesterone slowing GI motility", "Fetal head compression"], ans: 2 },
+                        { q: "To reduce varicose vein discomfort, the nurse should advise:", options: ["Prolonged standing", "Tight stockings below knee", "Elevating legs and compression stockings", "Sitting with crossed legs"], ans: 2 },
+                        { q: "Which of the following is a safe analgesic for leg cramps if non‑pharmacologic measures fail?", options: ["Ibuprofen", "Aspirin", "Acetaminophen", "Naproxen"], ans: 2 },
+                        { q: "A pregnant woman reports bleeding hemorrhoids. The most appropriate advice is:", options: ["High‑fiber diet, stool softeners, avoid straining", "Immediate surgery", "Decrease fluid intake", "Use enemas daily"], ans: 0 }
+                    ]
+                },
+                third: {
+                    title: "Quiz 3: Third Trimester Discomforts (10 items)",
+                    next: "relief",
+                    questions: [
+                        { q: "Backache in late pregnancy is primarily caused by:", options: ["Uterine infection", "Lumbar lordosis and postural changes", "Kidney stones", "Sciatica"], ans: 1 },
+                        { q: "Shortness of breath in third trimester is due to:", options: ["Pneumonia", "Diaphragm elevation by the uterus", "Pulmonary embolism", "Asthma exacerbation"], ans: 1 },
+                        { q: "Braxton Hicks contractions are characterized as:", options: ["Regular, painful, progressive", "Irregular, mild, non‑progressive", "Associated with bloody show", "Leading to cervical dilation"], ans: 1 },
+                        { q: "Which position is recommended to relieve supine hypotension and improve dyspnea?", options: ["Supine flat", "Left lateral recumbent", "Trendelenburg", "Lithotomy"], ans: 1 },
+                        { q: "Carpal tunnel syndrome in pregnancy is caused by:", options: ["Vitamin deficiency", "Fluid retention compressing median nerve", "Cervical radiculopathy", "Overuse injury"], ans: 1 },
+                        { q: "Round ligament pain typically presents as:", options: ["Sharp lower abdominal or groin pain with position change", "Constant epigastric pain", "Burning in the vagina", "Back pain radiating to legs"], ans: 0 },
+                        { q: "A pregnant woman at 36 weeks reports difficulty sleeping due to frequent urination and fetal kicks. The nurse should:", options: ["Suggest side‑lying, pillows, and limit fluids before bed", "Prescribe sleeping pills", "Order early delivery", "Tell her to sleep sitting up"], ans: 0 },
+                        { q: "Pelvic pressure in late pregnancy may indicate:", options: ["Normal fetal descent (lightening)", "Placenta previa", "Uterine rupture", "Ectopic pregnancy"], ans: 0 },
+                        { q: "Which of the following is NOT a recommended relief measure for third‑trimester backache?", options: ["Low-heeled shoes", "Pelvic tilt exercises", "Heavy lifting using back", "Firm mattress"], ans: 2 },
+                        { q: "A pregnant woman experiences a sudden gush of fluid followed by regular contractions. This indicates:", options: ["Normal Braxton Hicks", "Onset of labor – report immediately", "Round ligament pain", "Urinary incontinence"], ans: 1 }
+                    ]
+                },
+                relief: {
+                    title: "Quiz 4: General Relief & Self‑Care (10 items)",
+                    next: "nursing",
+                    questions: [
+                        { q: "Which of the following is the safest first‑line analgesic for mild pregnancy discomforts?", options: ["Ibuprofen", "Naproxen", "Acetaminophen", "Aspirin"], ans: 2 },
+                        { q: "To prevent supine hypotension, pregnant women should be advised to:", options: ["Lie flat on back", "Sleep on left side", "Elevate legs above heart", "Avoid all exercise"], ans: 1 },
+                        { q: "Which exercise is considered safe during most of pregnancy?", options: ["Contact sports", "Scuba diving", "Walking and swimming", "Heavy weightlifting"], ans: 2 },
+                        { q: "How much daily water intake is generally recommended for pregnant women?", options: ["4–6 glasses", "8–10 glasses", "12–15 glasses", "Only when thirsty"], ans: 1 },
+                        { q: "A pregnant woman complains of persistent vomiting and weight loss. This condition is called:", options: ["Morning sickness", "Hyperemesis gravidarum", "Gastroenteritis", "Food poisoning"], ans: 1 },
+                        { q: "Which of the following is a danger sign that requires immediate medical attention?", options: ["Mild ankle edema", "Heartburn after spicy food", "Severe headache with visual changes", "Braxton Hicks contractions"], ans: 2 },
+                        { q: "To reduce constipation, the nurse should recommend:", options: ["Decrease fiber", "Increase water and fruits/vegetables", "Use enemas weekly", "Decrease physical activity"], ans: 1 },
+                        { q: "Which position is best for improving venous return and reducing edema?", options: ["Supine", "Right lateral", "Left lateral recumbent", "Prone"], ans: 2 },
+                        { q: "Prenatal vitamins may worsen which discomfort?", options: ["Nausea", "Constipation", "Heartburn", "All of the above"], ans: 3 },
+                        { q: "A pregnant woman reports severe bilateral leg swelling, headache, and visual spots. The nurse should:", options: ["Advise rest and fluids", "Tell her it's normal", "Refer immediately for preeclampsia evaluation", "Give magnesium"], ans: 2 }
+                    ]
+                },
+                nursing: {
+                    title: "Quiz 5: Nursing Role & Danger Signs (10 items)",
+                    next: "mnemonics",
+                    questions: [
+                        { q: "A pregnant woman at 32 weeks reports a persistent severe headache and seeing flashing lights. The nurse should suspect:", options: ["Migraine", "Preeclampsia", "Sinusitis", "Normal pregnancy"], ans: 1 },
+                        { q: "Which of the following is a warning sign that should be reported immediately?", options: ["Fetal movements felt daily", "Mild ankle edema after long day", "Sudden gush of fluid from vagina", "Occasional Braxton Hicks"], ans: 2 },
+                        { q: "Epigastric or right upper quadrant pain in late pregnancy may indicate:", options: ["Constipation", "Round ligament pain", "HELLP syndrome or preeclampsia", "Muscle strain"], ans: 2 },
+                        { q: "The nurse's role in managing pregnancy discomforts includes:", options: ["Provide anticipatory guidance and safe relief measures", "Prescribe medications independently", "Ignore minor complaints", "Recommend bed rest for all"], ans: 0 },
+                        { q: "Which medication class should be avoided in the third trimester due to risk of premature ductus arteriosus closure?", options: ["Acetaminophen", "NSAIDs (ibuprofen, naproxen)", "Penicillin", "Tylenol"], ans: 1 },
+                        { q: "A pregnant woman calls the clinic saying she has not felt fetal movement for 8 hours. The nurse should:", options: ["Reassure and tell her to wait another day", "Advise immediate evaluation", "Tell her to drink orange juice and call back", "Schedule an appointment next week"], ans: 1 },
+                        { q: "Which of the following is a normal physiologic change that should NOT be reported as an emergency?", options: ["Facial edema", "Dependent ankle edema that improves with elevation", "Persistent vomiting", "Decreased fetal movement"], ans: 1 },
+                        { q: "The nurse teaches a pregnant woman about danger signs. Which statement indicates understanding?", options: ["'I'll call if I have a mild headache'", "'I'll report sudden swelling of my face or hands'", "'I'll wait for my next visit for any bleeding'", "'Braxton Hicks always mean preterm labor'"], ans: 1 },
+                        { q: "Which of the following is a recommended non‑pharmacologic measure for low back pain?", options: ["Pelvic tilt exercises", "Bed rest for weeks", "High‑heeled shoes", "Heavy lifting"], ans: 0 },
+                        { q: "A pregnant woman with hyperemesis gravidarum is at risk for:", options: ["Preeclampsia", "Dehydration and electrolyte imbalance", "Gestational diabetes", "Polyhydramnios"], ans: 1 }
+                    ]
+                }
+            };
+            
+            // Build final 50‑item exam (10 from each section)
+            let finalQuestions = [];
+            for(let sec of ['first','second','third','relief','nursing']) {
+                finalQuestions = finalQuestions.concat(quizzes[sec].questions.slice(0,10));
+            }
+            while(finalQuestions.length < 50) finalQuestions.push({ q: "Which of the following is a common first‑trimester discomfort caused by elevated hCG?", options: ["Nausea and vomiting", "Backache", "Shortness of breath", "Leg cramps"], ans: 0 });
+            quizzes['final_quiz'] = { title: "Final 50‑Item Exam: Discomforts of Pregnancy & Relief Measures", next: null, questions: finalQuestions };
+            
+            // Helper functions
+            window.unlockedSections = unlockedSections;
+            window.quizzes = quizzes;
+            
+            window.unlockFirstSection = function() {
+                if(!unlockedSections.includes('first')) {
+                    unlockedSections.push('first');
+                    updateSidebarUI();
+                }
+                showSection('first');
+            };
+            
+            window.showSection = function(id) {
+                if(!unlockedSections.includes(id) && id !== 'home') {
+                    alert("You must pass the previous section quiz (≥75%) to unlock this content.");
+                    return;
+                }
+                document.querySelectorAll('.content-section').forEach(el => el.classList.add('hidden'));
+                const target = document.getElementById(id);
+                if(target) target.classList.remove('hidden');
+                document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+                const activeBtn = document.getElementById('btn-'+id);
+                if(activeBtn) activeBtn.classList.add('active');
+                if(window.innerWidth < 768) document.getElementById('sidebar')?.classList.add('hidden');
+                document.querySelector('main').scrollTop = 0;
+            };
+            
+            function updateSidebarUI() {
+                const all = ['home','first','second','third','relief','nursing','mnemonics','final_quiz_sec'];
+                all.forEach(sec => {
+                    const btn = document.getElementById('btn-'+sec);
+                    if(!btn) return;
+                    const lockIcon = btn.querySelector('.fa-lock'), mainIcon = btn.querySelector('.nav-icon');
+                    if(unlockedSections.includes(sec) || sec === 'home') {
+                        btn.classList.remove('locked-section');
+                        if(lockIcon) lockIcon.classList.add('hidden');
+                        if(mainIcon) mainIcon.classList.remove('hidden');
+                    } else {
+                        btn.classList.add('locked-section');
+                        if(lockIcon) lockIcon.classList.remove('hidden');
+                        if(mainIcon) mainIcon.classList.add('hidden');
+                    }
+                });
+            }
+            
+            let currentQuiz = null;
+            window.openQuiz = function(sectionId) {
+                currentQuiz = sectionId;
+                const qd = quizzes[sectionId];
+                if(!qd) return;
+                document.getElementById('quiz-title').innerText = qd.title;
+                const container = document.getElementById('quiz-questions-container');
+                container.innerHTML = '';
+                qd.questions.forEach((q, idx) => {
+                    let html = `<div class="bg-slate-50 p-4 rounded-xl border mb-4"><p class="font-bold mb-3">${idx+1}. ${q.q}</p><div class="space-y-2">`;
+                    q.options.forEach((opt, oi) => {
+                        html += `<label class="flex items-center space-x-3 p-2 rounded-lg hover:bg-white cursor-pointer"><input type="radio" name="q${idx}" value="${oi}" class="form-radio text-preg"><span>${opt}</span></label>`;
+                    });
+                    html += `</div><div class="feedback-${idx} text-sm mt-2 hidden"></div></div>`;
+                    container.innerHTML += html;
+                });
+                document.getElementById('quiz-submit-btn').classList.remove('hidden');
+                document.getElementById('quiz-result-container').classList.add('hidden');
+                document.getElementById('quiz-modal').classList.remove('hidden');
+            };
+            
+            window.closeQuiz = function() {
+                document.getElementById('quiz-modal').classList.add('hidden');
+            };
+            
+            window.submitQuiz = function() {
+                const qd = quizzes[currentQuiz];
+                if(!qd) return;
+                let score = 0;
+                for(let i = 0; i < qd.questions.length; i++) {
+                    const selected = document.querySelector(`input[name="q${i}"]:checked`);
+                    const isCorrect = selected && parseInt(selected.value) === qd.questions[i].ans;
+                    if(isCorrect) score++;
+                    const fbDiv = document.querySelector(`.feedback-${i}`);
+                    if(fbDiv) {
+                        fbDiv.classList.remove('hidden');
+                        const correctAns = qd.questions[i].options[qd.questions[i].ans];
+                        if(isCorrect) {
+                            fbDiv.innerHTML = `<span class="text-green-700"><i class="fa-regular fa-circle-check"></i> Correct!</span>`;
+                            fbDiv.parentElement?.classList.add('quiz-feedback-correct');
+                            fbDiv.parentElement?.classList.remove('quiz-feedback-wrong');
+                        } else {
+                            const selectedText = selected ? qd.questions[i].options[parseInt(selected.value)] : "No answer";
+                            fbDiv.innerHTML = `<span class="text-red-700"><i class="fa-regular fa-circle-xmark"></i> Incorrect. Correct: ${correctAns}. Your answer: ${selectedText}</span>`;
+                            fbDiv.parentElement?.classList.add('quiz-feedback-wrong');
+                            fbDiv.parentElement?.classList.remove('quiz-feedback-correct');
+                        }
+                    }
+                }
+                const percent = (score / qd.questions.length) * 100;
+                const resultDiv = document.getElementById('quiz-result-container');
+                const btn = document.getElementById('quiz-submit-btn');
+                btn.classList.add('hidden');
+                resultDiv.classList.remove('hidden');
+                if(percent >= 75) {
+                    if(currentQuiz === 'final_quiz') {
+                        resultDiv.innerHTML = `<div class="text-amber-500 text-6xl text-center">🏆</div><h3 class="text-2xl font-black text-center">Mastery Achieved!</h3><p class="text-center">Score ${score}/${qd.questions.length} (${percent}%)</p><p class="text-center text-green-700">You have mastered the discomforts of pregnancy and relief measures based on Adele Pillitteri.</p><button onclick="closeQuiz()" class="mt-4 w-full bg-preg text-white py-2 rounded-lg">Close</button>`;
+                        return;
+                    }
+                    if(qd.next && !unlockedSections.includes(qd.next)) {
+                        unlockedSections.push(qd.next);
+                        if(qd.next === 'mnemonics') unlockedSections.push('final_quiz_sec');
+                        updateSidebarUI();
+                    }
+                    resultDiv.innerHTML = `<div class="text-green-600 text-5xl text-center">✓</div><h3 class="text-2xl font-black text-center">Passed!</h3><p class="text-center">Score ${score}/${qd.questions.length} (${percent}%)</p><button onclick="closeQuiz(); showSection('${qd.next}')" class="mt-4 w-full bg-green-600 text-white py-2 rounded-lg">Unlock Next Section</button>`;
+                } else {
+                    resultDiv.innerHTML = `<div class="text-red-500 text-5xl text-center">✗</div><h3 class="text-2xl font-black text-center">Failed</h3><p class="text-center">Score ${score}/${qd.questions.length} (${percent}%). Need 75%.</p><button onclick="openQuiz('${currentQuiz}')" class="mt-4 w-full bg-slate-600 text-white py-2 rounded-lg">Try Again</button>`;
+                }
+            };
+            
+            window.toggleRecallMode = function() {
+                const active = !document.body.classList.contains('recall-mode');
+                const toggle = document.getElementById('recall-toggle'), knob = document.getElementById('recall-knob');
+                if(active) {
+                    document.body.classList.add('recall-mode');
+                    toggle.classList.add('bg-preg');
+                    knob.classList.add('translate-x-6');
+                } else {
+                    document.body.classList.remove('recall-mode');
+                    toggle.classList.remove('bg-preg');
+                    knob.classList.remove('translate-x-6');
+                }
+            };
+            
+            window.toggleMobileMenu = function() {
+                const s = document.getElementById('sidebar');
+                if(s.classList.contains('hidden')) s.classList.remove('hidden');
+                else s.classList.add('hidden');
+            };
+            
+            document.addEventListener('DOMContentLoaded', () => {
+                updateSidebarUI();
+                document.querySelectorAll('.reveal-text').forEach(el => {
+                    el.addEventListener('click', function() {
+                        if(document.body.classList.contains('recall-mode')) this.classList.toggle('revealed');
+                    });
+                });
+            });
+        })();
+    </script>
+</body>
+</html>
